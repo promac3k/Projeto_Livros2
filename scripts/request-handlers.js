@@ -54,7 +54,7 @@ const getindex = (req, res) => {
 
             //console.log(livros);
 
-            
+
 
             // Renderiza a página inicial com os livros encontrados
             res.render('index', { livros: livros, currentPage: page, totalPages: totalPages });
@@ -106,6 +106,18 @@ const getperfil = (req, res) => {
         );
     };
 
+    const getUserAdmin = (req, res) => {
+        connection.query(
+            "SELECT id, username, email, password, telephone, birth_date, country FROM users",
+            (error, results) => {
+                if (error) {
+                    return req(error);
+                }
+                req(null, results)
+            }
+        );
+    };
+
     const getUserAccessLogs = (userId, callback) => {
         connection.query("SELECT * FROM access_logs WHERE user_id = ?", [userId], (error, results) => {
             if (error) {
@@ -148,43 +160,53 @@ const getperfil = (req, res) => {
             country: user.country
         };
 
-        getUserFavorites(userId, (error, favoritos) => {
+        getUserAdmin((error, adminUser) => {
             if (error) {
                 console.error(error);
-                return res.status(500).send('Erro ao buscar favoritos');
+                return res.status(500).send('Erro ao procurar utilizadores');
             }
 
-            perfil.favoritos = favoritos;
+            perfil.user = adminUser;
 
-            getUserAccessLogs(userId, (error, accessLogs) => {
+            getUserFavorites(userId, (error, favoritos) => {
                 if (error) {
                     console.error(error);
-                    return res.status(500).send('Erro ao buscar logs de acesso');
+                    return res.status(500).send('Erro ao buscar favoritos');
                 }
 
-                perfil.access_count = accessLogs.access_count;
-                perfil.timestamp_old = accessLogs.timestamp_old;
+                perfil.favoritos = favoritos;
 
-                const bookIds = favoritos.map(livro => livro.id);
+                getUserAccessLogs(userId, (error, accessLogs) => {
 
-                getUserRatings(userId, bookIds, (error, ratings) => {
+
+
                     if (error) {
                         console.error(error);
-                        return res.status(500).send('Erro ao buscar classificação');
+                        return res.status(500).send('Erro ao buscar logs de acesso');
                     }
 
-                    const ratingsMap = ratings.reduce((acc, review) => {
-                        acc[review.book_id] = review.rating;
-                        return acc;
-                    }, {});
+                    perfil.access_count = accessLogs.access_count;
+                    perfil.timestamp_old = accessLogs.timestamp_old;
 
-                    perfil.favoritos.forEach(livro => {
-                        livro.rating = ratingsMap[livro.id] || 0;
+                    const bookIds = favoritos.map(livro => livro.id);
+
+                    getUserRatings(userId, bookIds, (error, ratings) => {
+                        if (error) {
+                            console.error(error);
+                            return res.status(500).send('Erro ao buscar classificação');
+                        }
+
+                        const ratingsMap = ratings.reduce((acc, review) => {
+                            acc[review.book_id] = review.rating;
+                            return acc;
+                        }, {});
+
+                        perfil.favoritos.forEach(livro => {
+                            livro.rating = ratingsMap[livro.id] || 0;
+                        });
+
+                        res.render("perfil", { perfil: perfil });
                     });
-
-                    //console.log(perfil);
-
-                    res.render("perfil", { perfil: perfil });
                 });
             });
         });
@@ -508,7 +530,7 @@ const geteditar = (req, res) => {
             res.render("editar", { perfil: perfil });
         });
 
-    } else { 
+    } else {
         res.redirect('/login');
     }
 }
@@ -784,7 +806,7 @@ const putrating = (req, res) => {
                 console.error(error);
                 return res.status(500).send('Erro ao registrar classificação');
             }
-            res.json({ success: true, userRating: rating });     
+            res.json({ success: true, userRating: rating });
         }
     );
 }

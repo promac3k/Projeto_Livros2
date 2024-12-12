@@ -45,6 +45,60 @@
             <p>Ultimo Login: <%= new Date(perfil.timestamp_old).toLocaleString() %></p>
             <p>Número de Acessos: <%= perfil.access_count %></p>
         </section>
+
+        <section class="profile-users">
+            <hr>
+            <h2>Lista de Utilizadores:</h2>
+            <div class="row px-4">
+                <div class="col-lg-12 border rounded shadow-sm">
+                    <table class="table table-hover table-responsive-lg">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Username</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Password</th>
+                                <th scope="col">Nº Telemovel</th>
+                                <th scope="col">Data Nascimento</th>
+                                <th scope="col">Pais</th>
+                                <th scope="col">Remover</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% perfil.user.forEach(user => { %>
+                                <tr>
+                                    <td>
+                                        <smal><%= user.username %></smal>
+                                    </td>
+                                    <td>
+                                        <small><%= user.email %></small>
+                                    </td>
+                                    <td>
+                                        <small><%= user.password %></small>
+                                    </td>
+                                    <td>
+                                        <small><%= user.telephone %></small>
+                                    </td>
+                                    <td>
+                                        <small><%= new Date(perfil.birth_date).toLocaleDateString() %></small>
+                                    </td>
+                                    <td>
+                                       <small><%= user.country %></small>
+                                    </td>
+                                    <td>
+                                        <button id="DeleteFav" title="Remover dos Favoritos" data-product="<%= user.id %>"
+                                            class="DeleteFav update-favs btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+
         <section class="profile-favorite">
             <hr>
             <h2>Lista de Favoritos:</h2>

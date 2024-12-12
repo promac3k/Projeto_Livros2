@@ -104,6 +104,13 @@ button:hover {
 
 .profile-favorite {
     margin-top: 20px;
+    display: none;
+}
+
+.profile-users {
+    margin-top: 20px;
+    display: block;
+    width: 80%;
 }
 
 .table-responsive-lg {
@@ -124,7 +131,7 @@ button:hover {
 .table th, .table td {
     vertical-align: middle;
     text-align: center;
-    padding: 20px;
+    padding: 15px;
     border: 1px solid #dee2e6;
 }
 
