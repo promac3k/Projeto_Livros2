@@ -55,8 +55,16 @@
           <div class="favorito">
             <h3>Adicionar aos favoritos:</h3>
             <span id="favorite-heart" class="<%= detalhes.is_favorite ? 'favorited' : '' %>">&#10084;</span>
+          </div>
         </div>
-        </div>
+          <% if (detalhes.cargo === 1) { %>
+            <div class="admin">
+              <h2>Administração:</h2>
+              <hr>
+              <button id="edit-button">Editar Livro</button>
+              <button id="delete-button">Eliminar Livro</button>
+            </div>
+          <% } %>          
       </div>
     </section>
   </main>

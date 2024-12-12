@@ -79,4 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Envia os dados do formulário como uma string JSON
         xhr.send(JSON.stringify({ bookId: bookId, favorite: !isFavorite }));
     });
+
+    // Lidar com o clique no botão de editar
+    const editButton = document.getElementById('edit-button');
+    editButton.addEventListener('click', function() {
+        window.location.href = `/detalhes/${bookId}/editar`;
+    });
 });

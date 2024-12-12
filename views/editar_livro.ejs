@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Livro - Biblioteca</title>
+    <link rel="stylesheet" href="../../styles/editar.css">
+    <script src="../../scripts/editar.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h3>Editar Livro</h3>
+        <form id="formEditarLivro">
+            <label for="title">Título:</label>
+            <input id="title" name="title" type="text" value="<%= livro.title %>" placeholder="Introduza o título" required>
+            
+            <label for="description">Descrição:</label>
+            <textarea id="description" name="description" placeholder="Introduza a descrição" required><%= livro.description %></textarea>
+
+            <label for="author">Autor:</label>
+            <select id="author" name="author" required>
+                <% autores.forEach(function(autor) { %>
+                    <option value="<%= autor.id %>" <%= autor.id === livro.author_id ? 'selected' : '' %>><%= autor.name %></option>
+                <% }); %>
+            </select>
+
+            <label for="genres">Gêneros:</label>
+            <select id="genres" name="genres" multiple required>
+                <% generos.forEach(function(genero) { %>
+                    <option value="<%= genero.id %>" <%= generosLivro.includes(genero.id) ? 'selected' : '' %>><%= genero.name %></option>
+                <% }); %>
+            </select>
+
+            <label for="publication_year">Ano de Publicação:</label>
+            <input type="date" id="publication_year" name="publication_year" value="<%= livro.publication_year.toISOString().split('T')[0] %>" placeholder="Data de Publicação" required>
+            
+            <label for="publisher">Editora:</label>
+            <input id="publisher" name="publisher" type="text" value="<%= livro.publisher %>" placeholder="Introduza a editora" required>
+
+            <label for="synopsis">Sinopse:</label>
+            <textarea id="synopsis" name="synopsis" placeholder="Introduza a sinopse" required><%= livro.synopsis %></textarea>
+
+            <label for="language">Idioma:</label>
+            <input id="language" name="language" type="text" value="<%= livro.language %>" placeholder="Introduza o idioma" required>
+
+            <label for="pages">Páginas:</label>
+            <input id="pages" name="pages" type="number" value="<%= livro.pages %>" placeholder="Introduza o número de páginas" required>
+
+            <label for="stock">Stock:</label>
+            <input id="stock" name="stock" type="number" value="<%= livro.stock %>" placeholder="Introduza a quantidade em stock" required>
+
+            <label for="price">Preço:</label>
+            <input id="price" name="price" type="number" step="0.01" value="<%= livro.price %>" placeholder="Introduza o preço" required>
+
+            <label for="cover_image">Imagem da Capa:</label>
+            <input id="cover_image" name="cover_image" type="text" value="<%= livro.cover_image %>" placeholder="Introduza o URL da imagem da capa" required>
+
+            <div class="buttons">
+                <button type="button" onclick="window.location.href='/detalhes/<%= livro.id %>'">Cancelar</button>
+                <button type="submit">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -374,7 +374,26 @@ const getdetalhes_dados = (req, res) => {
     const id = req.params.id;
     console.log("GET /detalhes/" + id);
 
-    const userId = req.cookies.id;
+    const userId = req.cookies.id || null;
+
+    const getusercargo = (userId, callback) => {
+        if (!userId) {
+            return callback(null, 0); // Se não houver usuário, assume cargo 0 (não admin)
+        }
+        connection.query("SELECT * FROM users WHERE id = ?", [userId], (error, results) => {
+            if (error) {
+                return callback(error);
+            }
+            if (results.length === 0) {
+                return callback(new Error('Utilizador não encontrado'));
+            }
+
+            const db = results[0];
+            const cargo = db.cargo;
+
+            callback(null, cargo);
+        });
+    };
 
     const getBookDetails = (bookId, callback) => {
         connection.query("SELECT * FROM books WHERE id = ?", [bookId], (error, results) => {
@@ -438,76 +457,85 @@ const getdetalhes_dados = (req, res) => {
         });
     };
 
-    getBookDetails(id, (error, livro) => {
+    getusercargo(userId, (error, cargo) => {
         if (error) {
             console.error(error);
             return res.status(500).send(error.message);
         }
 
-        const detalhes = {
-            titulo: livro.title,
-            descriçao: livro.description,
-            data_publicação: livro.publication_year,
-            editora: livro.publisher,
-            sinopse: livro.synopsis,
-            idioma: livro.language,
-            páginas: livro.pages,
-            stock: livro.stock,
-            preço: livro.price,
-            imagem: livro.cover_image
-        };
-
-        getAuthorDetails(livro.author_id, (error, autor) => {
+        getBookDetails(id, (error, livro) => {
             if (error) {
                 console.error(error);
                 return res.status(500).send(error.message);
             }
 
-            detalhes.autor = autor.name;
-            detalhes.data_nascimento = autor.birth_date;
-            detalhes.nacionalidade = autor.nationality;
-            detalhes.biografia = autor.biography;
+            const detalhes = {
+                id: livro.id,
+                titulo: livro.title,
+                descriçao: livro.description,
+                data_publicação: livro.publication_year,
+                editora: livro.publisher,
+                sinopse: livro.synopsis,
+                idioma: livro.language,
+                páginas: livro.pages,
+                stock: livro.stock,
+                preço: livro.price,
+                imagem: livro.cover_image,
+                cargo: cargo
+            };
 
-            getBookGenres(id, (error, generos) => {
+            getAuthorDetails(livro.author_id, (error, autor) => {
                 if (error) {
                     console.error(error);
                     return res.status(500).send(error.message);
                 }
 
-                detalhes.generos = generos;
+                detalhes.autor = autor.name;
+                detalhes.data_nascimento = autor.birth_date;
+                detalhes.nacionalidade = autor.nationality;
+                detalhes.biografia = autor.biography;
 
-                getUserRating(userId, id, (error, userRating) => {
+                getBookGenres(id, (error, generos) => {
                     if (error) {
                         console.error(error);
                         return res.status(500).send(error.message);
                     }
 
-                    detalhes.user_rating = userRating;
+                    detalhes.generos = generos;
 
-                    getFavoriteStatus(userId, id, (error, isFavorite) => {
+                    getUserRating(userId, id, (error, userRating) => {
                         if (error) {
                             console.error(error);
                             return res.status(500).send(error.message);
                         }
 
-                        detalhes.is_favorite = isFavorite;
+                        detalhes.user_rating = userRating;
 
-                        console.log(detalhes);
+                        getFavoriteStatus(userId, id, (error, isFavorite) => {
+                            if (error) {
+                                console.error(error);
+                                return res.status(500).send(error.message);
+                            }
 
-                        // Verifica se a imagem existe
-                        const imagePath = path.join(__dirname, '../www/images', detalhes.imagem);
-                        if (!fs.existsSync(imagePath)) {
-                            detalhes.imagem = null;
-                        }
+                            detalhes.is_favorite = isFavorite;
 
-                        // Renderiza a página de detalhes com todos os detalhes
-                        res.render('detalhes', { detalhes: detalhes });
+                            console.log(detalhes);
+
+                            // Verifica se a imagem existe
+                            const imagePath = path.join(__dirname, '../www/images', detalhes.imagem);
+                            if (!fs.existsSync(imagePath)) {
+                                detalhes.imagem = null;
+                            }
+
+                            // Renderiza a página de detalhes com todos os detalhes
+                            res.render('detalhes', { detalhes: detalhes });
+                        });
                     });
                 });
             });
         });
     });
-}
+};
 const geteditar = (req, res) => {
     console.log("GET /editar");
 
@@ -534,6 +562,87 @@ const geteditar = (req, res) => {
         res.redirect('/login');
     }
 }
+const geteditar_livro = (req, res) => {
+    console.log("GET /editar-livro/" + req.params.id);
+
+    const isLoggedIn = req.cookies.isLoggedIn;
+
+    if (isLoggedIn === 'true') {
+        const bookId = req.params.id;
+
+        const getBookDetails = (bookId, callback) => {
+            connection.query("SELECT * FROM books WHERE id = ?", [bookId], (error, results) => {
+                if (error) {
+                    return callback(error);
+                }
+                if (results.length === 0) {
+                    return callback(new Error('Livro não encontrado'));
+                }
+                callback(null, results[0]);
+            });
+        };
+
+        const getAuthors = (callback) => {
+            connection.query("SELECT * FROM author", (error, results) => {
+                if (error) {
+                    return callback(error);
+                }
+                callback(null, results);
+            });
+        };
+
+        const getGenres = (callback) => {
+            connection.query("SELECT * FROM genres", (error, results) => {
+                if (error) {
+                    return callback(error);
+                }
+                callback(null, results);
+            });
+        };
+
+        const getBookGenres = (bookId, callback) => {
+            connection.query("SELECT * FROM book_genres WHERE book_id = ?", [bookId], (error, results) => {
+                if (error) {
+                    return callback(error);
+                }
+                const genreIds = results.map(genero => genero.genre_id);
+                callback(null, genreIds);
+            });
+        };
+
+        getBookDetails(bookId, (error, livro) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).send('Erro ao buscar livro');
+            }
+
+            getAuthors((error, autores) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).send('Erro ao buscar autor');
+                }
+
+                getGenres((error, generos) => {
+                    if (error) {
+                        console.error(error);
+                        return res.status(500).send('Erro ao buscar gêneros');
+                    }
+
+                    getBookGenres(bookId, (error, generosLivro) => {
+                        if (error) {
+                            console.error(error);
+                            return res.status(500).send('Erro ao buscar gêneros do livro');
+                        }
+
+                        res.render("editar_livro", { livro: livro, autores: autores, generos: generos, generosLivro: generosLivro });
+                    });
+                });
+            });
+        });
+    } else {
+        res.redirect('/login');
+    }
+};
 
 //---------------------------------------------------------
 // ZONA DE POST - EM BAIXO
@@ -900,6 +1009,46 @@ const puteditar = (req, res) => {
         });
     });
 }
+const puteditar_livro = (req, res) => {
+    console.log("PUT /editar-livro/" + req.params.id);
+    console.log(req.body);
+
+    const { title, description, publication, author, genres, publisher, synopsis, language, pages, price, cover_image } = req.body;
+    const bookId = req.params.id;
+
+    // Atualiza os detalhes do livro
+    connection.query(
+        "UPDATE books SET title = ?, description = ?, publication_year = ?, author_id = ?, publisher = ?, synopsis = ?, language = ?, pages = ?, price = ?, cover_image = ? WHERE id = ?",
+        [title, description, publication, author, publisher, synopsis, language, pages, price, cover_image, bookId],
+        (error, results) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).send('Erro ao atualizar livro');
+            }
+
+            // Atualiza os gêneros do livro
+            connection.query("DELETE FROM book_genres WHERE book_id = ?", [bookId], (error, results) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).send('Erro ao remover gêneros do livro');
+                }
+
+                const genreValues = genres.split(',').map(genreId => [bookId, genreId]);
+                connection.query(
+                    "INSERT INTO book_genres (book_id, genre_id) VALUES ?",
+                    [genreValues],
+                    (error, results) => {
+                        if (error) {
+                            console.error(error);
+                            return res.status(500).send('Erro ao adicionar gêneros do livro');
+                        }
+                        res.json({ success: true });
+                    }
+                );
+            });
+        }
+    );
+}
 
 //---------------------------------------------------------
 // ZONA DE DELETE - EM BAIXO
@@ -947,5 +1096,7 @@ module.exports = {
     deletefavorite,
     geteditar,
     puteditar,
-    postaddbook
+    postaddbook,
+    geteditar_livro,
+    puteditar_livro
 }

@@ -29,6 +29,7 @@ app.get("/dashboard", requestHandlers.getdashboard);
 app.get("/ranking", requestHandlers.getranking);
 app.get("/detalhes/:id", requestHandlers.getdetalhes_dados);
 app.get("/editar", requestHandlers.geteditar);
+app.get("/detalhes/:id/editar", requestHandlers.geteditar_livro);
 
 //------------------------------------------------------
 // Rotas - POST
@@ -44,6 +45,7 @@ app.post("/add-book", requestHandlers.postaddbook);
 app.put("/rating", requestHandlers.putrating);
 app.put("/favorite", requestHandlers.putfavorite);
 app.put("/editar", requestHandlers.puteditar);
+app.put("/editar_livro/:id", requestHandlers.puteditar_livro);
 
 //------------------------------------------------------
 // Rotas - DELETE
