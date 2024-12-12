@@ -1061,7 +1061,7 @@ const puteditar_livro = (req, res) => {
 //---------------------------------------------------------
 const deletefavorite = (req, res) => {
     const bookId = req.params.id;
-    console.log("DELETE /favorite" + bookId);
+    console.log("DELETE /favorite/" + bookId);
     
     const userId = req.cookies.id;
 
