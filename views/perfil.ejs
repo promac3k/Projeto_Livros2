@@ -46,115 +46,156 @@
             <p>Número de Acessos: <%= perfil.access_count %></p>
         </section>
 
-        <section class="profile-users">
-            <hr>
-            <h2>Lista de Utilizadores:</h2>
-            <div class="row px-4">
-                <div class="col-lg-12 border rounded shadow-sm">
-                    <table class="table table-hover table-responsive-lg">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">Username</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Password</th>
-                                <th scope="col">Nº Telemovel</th>
-                                <th scope="col">Data Nascimento</th>
-                                <th scope="col">Pais</th>
-                                <th scope="col">Remover</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% perfil.user.forEach(user => { %>
-                                <tr>
-                                    <td>
-                                        <smal><%= user.username %></smal>
-                                    </td>
-                                    <td>
-                                        <small><%= user.email %></small>
-                                    </td>
-                                    <td>
-                                        <small><%= user.password %></small>
-                                    </td>
-                                    <td>
-                                        <small><%= user.telephone %></small>
-                                    </td>
-                                    <td>
-                                        <small><%= new Date(perfil.birth_date).toLocaleDateString() %></small>
-                                    </td>
-                                    <td>
-                                       <small><%= user.country %></small>
-                                    </td>
-                                    <td>
-                                        <button id="DeleteFav" title="Remover dos Favoritos" data-product="<%= user.id %>"
-                                            class="DeleteFav update-favs btn btn-outline-secondary btn-sm">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="profile-favorite">
-            <hr>
-            <h2>Lista de Favoritos:</h2>
-            <div class="row px-4">
-                <div class="col-lg-12 border rounded shadow-sm">
-                    <table class="table table-hover table-responsive-lg">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">Detalhes</th>
-                                <th scope="col">Imagem</th>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Preço</th>
-                                <th scope="col">Rating</th>
-                                <th scope="col">Remover</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% perfil.favoritos.forEach(favorito => { %>
-                                <tr>
-                                    <th scope="row">
-                                        <a class="btn btn-outline-success" href="/detalhes/<%= favorito.id %>">
-                                            <i class="fas fa-file-alt"></i>
-                                        </a>
-                                    </th>
-                                    <td>
-                                        <img class="img-thumbnail row-image" src="images/<%= favorito.imagem %>">
-                                    </td>
-                                    <td>
-                                        <small><%= favorito.title %></small>
-                                    </td>
-                                    <td>
-                                        <%= favorito.price %>€
-                                    </td>
-                                    <td>
-                                        <div class="rating">
-                                            <div class="stars">
-                                                <% for (let i = 1; i <= 5; i++) { %>
+        <% if (perfil.cargo === 1) { %> 
+            <div class="profile-tables">
+                <section class="profile-users">
+                    <h2>Lista de Utilizadores:</h2>
+                    <hr>
+                    <div class="row px-4">
+                        <div class="col-lg-12 border rounded shadow-sm">
+                            <table class="table table-hover table-responsive-lg">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Password</th>
+                                        <th scope="col">Nº Telemovel</th>
+                                        <th scope="col">Data Nascimento</th>
+                                        <th scope="col">Pais</th>
+                                        <th scope="col">Remover</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% admin.forEach(user => { %>
+                                    <tr>
+                                        <td><small><%= user.username %></small></td>
+                                        <td><small><%= user.email %></small></td>
+                                        <td><small><%= user.password %></small></td>
+                                        <td><small><%= user.telephone %></small></td>
+                                        <td><small><%= new Date(perfil.birth_date).toLocaleDateString() %></small></td>
+                                        <td><small><%= user.country %></small></td>
+                                        <td>
+                                            <button id="DeleteUser" title="Remover User" data-user="<%= user.id %>"
+                                                class="DeleteUser update-favs btn btn-outline-secondary btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <section class="profile-favorite">
+                    <h2>Lista de Favoritos:</h2>
+                    <hr>
+                    <div class="row px-4">
+                        <div class="col-lg-12 border rounded shadow-sm">
+                            <table class="table table-hover table-responsive-lg">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Detalhes</th>
+                                        <th scope="col">Imagem</th>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Preço</th>
+                                        <th scope="col">Rating</th>
+                                        <th scope="col">Remover</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% perfil.favoritos.forEach(favorito => { %>
+                                    <tr>
+                                        <th scope="row">
+                                            <a class="btn btn-outline-success" href="/detalhes/<%= favorito.id %>">
+                                                <i class="fas fa-file-alt"></i>
+                                            </a>
+                                        </th>
+                                        <td><img class="img-thumbnail row-image" src="images/<%= favorito.imagem %>"></td>
+                                        <td><small><%= favorito.title %></small></td>
+                                        <td><%= favorito.price %>€</td>
+                                        <td>
+                                            <div class="rating">
+                                                <div class="stars">
+                                                    <% for (let i = 1; i <= 5; i++) { %>
                                                     <span class="star" data-value="<%= i %>">&#9733;</span>
-                                                <% } %>
+                                                    <% } %>
+                                                </div>
+                                                <p class="user-rating" id="user-rating" data-user-rating="<%= favorito.rating %>"></p>
                                             </div>
-                                            <p class="user-rating" id="user-rating" data-user-rating="<%= favorito.rating %>"></p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <button id="DeleteFav" title="Remover dos Favoritos" data-product="<%= favorito.id %>"
-                                            class="DeleteFav update-favs btn btn-outline-secondary btn-sm">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                </div>
+                                        </td>
+                                        <td>
+                                            <button id="DeleteFav" title="Remover dos Favoritos" data-product="<%= favorito.id %>"
+                                                class="DeleteFav update-favs btn btn-outline-secondary btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </section>
+        <% } else { %> 
+            <section class="profile-favorite">
+                <h2>Lista de Favoritos:</h2>
+                <hr>
+                <div class="row px-4">
+                    <div class="col-lg-12 border rounded shadow-sm">
+                        <table class="table table-hover table-responsive-lg">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Detalhes</th>
+                                    <th scope="col">Imagem</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Preço</th>
+                                    <th scope="col">Rating</th>
+                                    <th scope="col">Remover</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% perfil.favoritos.forEach(favorito => { %>
+                                    <tr>
+                                        <th scope="row">
+                                            <a class="btn btn-outline-success" href="/detalhes/<%= favorito.id %>">
+                                                <i class="fas fa-file-alt"></i>
+                                            </a>
+                                        </th>
+                                        <td>
+                                            <img class="img-thumbnail row-image" src="images/<%= favorito.imagem %>">
+                                        </td>
+                                        <td>
+                                            <small><%= favorito.title %></small>
+                                        </td>
+                                        <td>
+                                            <%= favorito.price %>€
+                                        </td>
+                                        <td>
+                                            <div class="rating">
+                                                <div class="stars">
+                                                    <% for (let i = 1; i <= 5; i++) { %>
+                                                        <span class="star" data-value="<%= i %>">&#9733;</span>
+                                                    <% } %>
+                                                </div>
+                                                <p class="user-rating" id="user-rating" data-user-rating="<%= favorito.rating %>"></p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button id="DeleteFav" title="Remover dos Favoritos" data-product="<%= favorito.id %>"
+                                                class="DeleteFav update-favs btn btn-outline-secondary btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        <% } %> 
     </main>
 </body>
 </html>

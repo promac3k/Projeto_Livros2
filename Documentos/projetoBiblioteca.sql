@@ -110,7 +110,13 @@ CREATE TABLE `book_genres`(
 
 -- Inserir Utilizador
 INSERT INTO `users` (username, email, password, telephone, birth_date, country, created_at, updated_at, cargo) VALUES
-("admin","admin@gmail.com","1234567!","+351 986257754", "2005-06-23", "Portugal", "2024-12-11 14:37:08", "2024-12-11 14:37:08", 1);
+("admin","admin@gmail.com","1234567!","+351 986257754", "2005-06-23", "Portugal", "2024-12-11 14:37:08", "2024-12-11 14:37:08", 1),
+("user","user@gmail.com","1234567!","+351 986257754", "2005-06-23", "Portugal", "2024-12-11 14:37:08", "2024-12-11 14:37:08", 0);
+
+-- Inserir access_logs
+INSERT INTO `access_logs` (user_id, access_count, timestamp_new, timestamp_old) VALUES
+(1, 0, NOW(), NOW()),
+(2, 0, NOW(), NOW());
 
 -- Inserir Gêneros
 INSERT INTO `genres` (name) VALUES 

@@ -52,6 +52,7 @@ app.put("/editar_livro/:id", requestHandlers.puteditar_livro);
 //------------------------------------------------------
 app.delete("/favorite", requestHandlers.deletefavorite);
 app.delete("/detalhes/:id", requestHandlers.delete_livro);
+app.delete("/delete_User/:id", requestHandlers.delete_User);
 
 // Servir arquivos estáticos
 app.use(express.static("www"));

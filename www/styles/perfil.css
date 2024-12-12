@@ -63,7 +63,7 @@ header nav .menu ul li button:hover {
 }
 
 main {
-    max-width: 800px;
+    max-width: 900px;
     margin: 20px auto;
     padding: 20px;
     background-color: white;
@@ -104,7 +104,6 @@ button:hover {
 
 .profile-favorite {
     margin-top: 20px;
-    display: none;
 }
 
 .profile-users {
@@ -214,4 +213,20 @@ button:hover {
 
 .star.selected {
     color: #f39c12;
+}
+
+.profile-tables {
+    display: flex;
+    flex-wrap: wrap; /* Responsividade para telas pequenas */
+    gap: 20px; /* Espaço entre as tabelas */
+}
+
+.profile-users, .profile-favorite {
+    flex: 1;
+    min-width: 48%; /* Largura mínima para responsividade */
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }

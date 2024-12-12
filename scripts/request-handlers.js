@@ -108,7 +108,7 @@ const getperfil = (req, res) => {
 
     const getUserAdmin = (req, res) => {
         connection.query(
-            "SELECT id, username, email, password, telephone, birth_date, country FROM users",
+            "SELECT * FROM users WHERE cargo != 1",
             (error, results) => {
                 if (error) {
                     return req(error);
@@ -157,56 +157,58 @@ const getperfil = (req, res) => {
             email: user.email,
             telephone: user.telephone,
             birth_date: user.birth_date,
-            country: user.country
+            country: user.country,
+            cargo: user.cargo
         };
 
-        getUserAdmin((error, adminUser) => {
+        getUserFavorites(userId, (error, favoritos) => {
             if (error) {
                 console.error(error);
-                return res.status(500).send('Erro ao procurar utilizadores');
+                return res.status(500).send('Erro ao buscar favoritos');
             }
 
-            perfil.user = adminUser;
+            perfil.favoritos = favoritos;
 
-            getUserFavorites(userId, (error, favoritos) => {
+            getUserAccessLogs(userId, (error, accessLogs) => {
                 if (error) {
                     console.error(error);
-                    return res.status(500).send('Erro ao buscar favoritos');
+                    return res.status(500).send('Erro ao buscar logs de acesso');
                 }
 
-                perfil.favoritos = favoritos;
+                perfil.access_count = accessLogs.access_count;
+                perfil.timestamp_old = accessLogs.timestamp_old;
 
-                getUserAccessLogs(userId, (error, accessLogs) => {
+                const bookIds = favoritos.map(livro => livro.id);
 
-
-
+                getUserRatings(userId, bookIds, (error, ratings) => {
                     if (error) {
                         console.error(error);
-                        return res.status(500).send('Erro ao buscar logs de acesso');
+                        return res.status(500).send('Erro ao buscar classificação');
                     }
 
-                    perfil.access_count = accessLogs.access_count;
-                    perfil.timestamp_old = accessLogs.timestamp_old;
+                    const ratingsMap = ratings.reduce((acc, review) => {
+                        acc[review.book_id] = review.rating;
+                        return acc;
+                    }, {});
 
-                    const bookIds = favoritos.map(livro => livro.id);
-
-                    getUserRatings(userId, bookIds, (error, ratings) => {
-                        if (error) {
-                            console.error(error);
-                            return res.status(500).send('Erro ao buscar classificação');
-                        }
-
-                        const ratingsMap = ratings.reduce((acc, review) => {
-                            acc[review.book_id] = review.rating;
-                            return acc;
-                        }, {});
-
-                        perfil.favoritos.forEach(livro => {
-                            livro.rating = ratingsMap[livro.id] || 0;
-                        });
-
-                        res.render("perfil", { perfil: perfil });
+                    perfil.favoritos.forEach(livro => {
+                        livro.rating = ratingsMap[livro.id] || 0;
                     });
+
+                    if (user.cargo === 1) {
+                        getUserAdmin((error, admin) => {
+                            if (error) {
+                                console.error(error);
+                                return res.status(500).send('Erro ao buscar admin');
+                            }
+
+                            //console.log(admin);
+
+                            res.render("perfil", { perfil: perfil, admin: admin });
+                        });
+                    } else {
+                        res.render("perfil", { perfil: perfil });
+                    }
                 });
             });
         });
@@ -1104,6 +1106,44 @@ const delete_livro = (req, res) => {
         });
     });
 };
+const delete_User = (req, res) => {
+    const userId = req.params.id;
+    console.log("DELETE /user/" + userId);
+
+    // Elimina os logs de acesso do utilizador
+    connection.query("DELETE FROM access_logs WHERE user_id = ?", [userId], (error, results) => {
+        if (error) {
+            console.error(error);
+            return res.status(500).send('Erro ao eliminar logs de acesso');
+        }
+
+        // Elimina os favoritos do utilizador
+        connection.query("DELETE FROM favorites WHERE user_id = ?", [userId], (error, results) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).send('Erro ao eliminar favoritos');
+            }
+
+            // Elimina as classificações do utilizador
+            connection.query("DELETE FROM reviews WHERE user_id = ?", [userId], (error, results) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).send('Erro ao eliminar classificações');
+                }
+
+                // Finalmente, elimina o utilizador
+                connection.query("DELETE FROM users WHERE id = ?", [userId], (error, results) => {
+                    if (error) {
+                        console.error(error);
+                        return res.status(500).send('Erro ao eliminar utilizador');
+                    }
+
+                    res.json({ success: true });
+                });
+            });
+        });
+    });
+};
 
 module.exports = {
     getindex,
@@ -1125,5 +1165,6 @@ module.exports = {
     postaddbook,
     geteditar_livro,
     puteditar_livro,
-    delete_livro
+    delete_livro,
+    delete_User
 }
