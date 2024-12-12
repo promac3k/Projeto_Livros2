@@ -85,4 +85,34 @@ document.addEventListener('DOMContentLoaded', function() {
     editButton.addEventListener('click', function() {
         window.location.href = `/detalhes/${bookId}/editar`;
     });
+
+    // Lidar com o clique no botão de excluir
+    const deleteButton = document.getElementById('delete-button');
+    deleteButton.addEventListener('click', function() {
+        if (confirm('Tem certeza de que deseja excluir este livro?')) {
+            // Cria uma nova solicitação AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open('DELETE', `/detalhes/${bookId}`, true);
+
+            // Define a função de callback para lidar com a resposta do servidor
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    if (data.success) {
+                        window.location.href = '/';
+                    } else {
+                        alert('Erro ao excluir livro');
+                    }
+                } else if (xhr.status === 401) {
+                    const data = JSON.parse(xhr.responseText);
+                    alert(data.message);
+                } else {
+                    alert('Erro ao enviar solicitação');
+                }
+            };
+
+            // Envia a solicitação
+            xhr.send();
+        }
+    });
 });

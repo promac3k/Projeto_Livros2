@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Livro - Biblioteca</title>
     <link rel="stylesheet" href="../../styles/editar.css">
-    <script src="../../scripts/editar.js" defer></script>
+    <script src="../../scripts/editar_livro.js" defer></script>
 </head>
 <body>
     <div class="container">
         <h3>Editar Livro</h3>
-        <form id="formEditarLivro">
+        <form id="formEditarLivro" action="/editar_livro/<%= livro.id %>" method="post">
             <label for="title">Título:</label>
             <input id="title" name="title" type="text" value="<%= livro.title %>" placeholder="Introduza o título" required>
             

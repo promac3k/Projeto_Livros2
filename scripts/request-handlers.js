@@ -1011,44 +1011,48 @@ const puteditar = (req, res) => {
 }
 const puteditar_livro = (req, res) => {
     console.log("PUT /editar-livro/" + req.params.id);
-    console.log(req.body);
+    //console.log(req.body);
 
-    const { title, description, publication, author, genres, publisher, synopsis, language, pages, price, cover_image } = req.body;
+    const {data} = req.body;
+    const { title, description, author, genres, publication_year, publisher, synopsis, language, pages, stock, price, cover_image } = data;
     const bookId = req.params.id;
 
+    //console.log(data);
+
     // Atualiza os detalhes do livro
-    connection.query(
-        "UPDATE books SET title = ?, description = ?, publication_year = ?, author_id = ?, publisher = ?, synopsis = ?, language = ?, pages = ?, price = ?, cover_image = ? WHERE id = ?",
-        [title, description, publication, author, publisher, synopsis, language, pages, price, cover_image, bookId],
-        (error, results) => {
+    const updateBookQuery = `
+        UPDATE books 
+        SET title = ?, description = ?, publication_year = ?, author_id = ?, publisher = ?, synopsis = ?, language = ?, pages = ?, price = ?, stock = ?, cover_image = ? 
+        WHERE id = ?
+    `;
+    const updateBookValues = [title, description, publication_year, author, publisher, synopsis, language, pages, price, stock, cover_image, bookId];
+
+    connection.query(updateBookQuery, updateBookValues, (error, results) => {
+        if (error) {
+            console.error(error);
+            return res.status(500).send('Erro ao atualizar livro');
+        }
+
+        // Atualiza os gêneros do livro
+        const deleteGenresQuery = "DELETE FROM book_genres WHERE book_id = ?";
+        connection.query(deleteGenresQuery, [bookId], (error, results) => {
             if (error) {
                 console.error(error);
-                return res.status(500).send('Erro ao atualizar livro');
+                return res.status(500).send('Erro ao remover gêneros do livro');
             }
 
-            // Atualiza os gêneros do livro
-            connection.query("DELETE FROM book_genres WHERE book_id = ?", [bookId], (error, results) => {
+            const genreValues = genres.map(genreId => [bookId, genreId]);
+            const insertGenresQuery = "INSERT INTO book_genres (book_id, genre_id) VALUES ?";
+            connection.query(insertGenresQuery, [genreValues], (error, results) => {
                 if (error) {
                     console.error(error);
-                    return res.status(500).send('Erro ao remover gêneros do livro');
+                    return res.status(500).send('Erro ao adicionar gêneros do livro');
                 }
-
-                const genreValues = genres.split(',').map(genreId => [bookId, genreId]);
-                connection.query(
-                    "INSERT INTO book_genres (book_id, genre_id) VALUES ?",
-                    [genreValues],
-                    (error, results) => {
-                        if (error) {
-                            console.error(error);
-                            return res.status(500).send('Erro ao adicionar gêneros do livro');
-                        }
-                        res.json({ success: true });
-                    }
-                );
+                res.json({ success: true });
             });
-        }
-    );
-}
+        });
+    });
+};
 
 //---------------------------------------------------------
 // ZONA DE DELETE - EM BAIXO
@@ -1078,6 +1082,28 @@ const deletefavorite = (req, res) => {
         }
     );
 }
+const delete_livro = (req, res) => {
+    const bookId = req.params.id;
+
+    // Remove os gêneros do livro
+    const deleteGenresQuery = "DELETE FROM book_genres WHERE book_id = ?";
+    connection.query(deleteGenresQuery, [bookId], (error, results) => {
+        if (error) {
+            console.error(error);
+            return res.status(500).send('Erro ao remover gêneros do livro');
+        }
+
+        const deleteBookQuery = "DELETE FROM books WHERE id = ?";
+        connection.query(deleteBookQuery, [bookId], (error, results) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).send('Erro ao deletar livro');
+            }
+
+            res.json({ success: true });
+        });
+    });
+};
 
 module.exports = {
     getindex,
@@ -1098,5 +1124,6 @@ module.exports = {
     puteditar,
     postaddbook,
     geteditar_livro,
-    puteditar_livro
+    puteditar_livro,
+    delete_livro
 }

@@ -51,6 +51,7 @@ app.put("/editar_livro/:id", requestHandlers.puteditar_livro);
 // Rotas - DELETE
 //------------------------------------------------------
 app.delete("/favorite", requestHandlers.deletefavorite);
+app.delete("/detalhes/:id", requestHandlers.delete_livro);
 
 // Servir arquivos estáticos
 app.use(express.static("www"));

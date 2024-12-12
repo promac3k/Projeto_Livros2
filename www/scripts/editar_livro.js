@@ -1,17 +1,32 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const form = document.getElementById('formEditarLivro');
-    const bookId = window.location.pathname.split('/').pop(); // Assume que o ID do livro está na URL
+    const bookId = window.location.pathname.split('/').filter(segment => !isNaN(segment)).pop(); // Assume que o ID do livro está na URL
+
+    console.log(bookId);
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        console.log('Formulário enviado');
-        console.log(form);
-
+        // Obtém os dados do formulário
         const formData = new FormData(form);
 
-        console.log(formData.get('title'));
+        const data = {
+            title: formData.get('title'),
+            description: formData.get('description'),
+            author: formData.get('author'),
+            genres: formData.getAll('genres'),
+            publication_year: formData.get('publication_year'),
+            publisher: formData.get('publisher'),
+            synopsis: formData.get('synopsis'),
+            language: formData.get('language'),
+            pages: formData.get('pages'),
+            stock: formData.get('stock'),
+            price: formData.get('price'),
+            cover_image: formData.get('cover_image')
+        };
+
+        console.log(data);
 
         // Cria uma nova solicitação AJAX
         const xhr = new XMLHttpRequest();
@@ -37,9 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         // Envia os dados do formulário como uma string JSON
-        xhr.send(JSON.stringify({
-            title: formData.get('title'),
-        }));
-    }
-    );
+        xhr.send(JSON.stringify({ data }));
+    });
 });
