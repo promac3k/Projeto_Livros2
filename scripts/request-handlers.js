@@ -1060,11 +1060,9 @@ const puteditar_livro = (req, res) => {
 // ZONA DE DELETE - EM BAIXO
 //---------------------------------------------------------
 const deletefavorite = (req, res) => {
-
-    console.log("DELETE /favorite");
-    console.log(req.body);
-
-    const { bookId } = req.body;
+    const bookId = req.params.id;
+    console.log("DELETE /favorite" + bookId);
+    
     const userId = req.cookies.id;
 
     if (!userId) {

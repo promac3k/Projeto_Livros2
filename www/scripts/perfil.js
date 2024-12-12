@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Cria uma nova solicitação AJAX
             const xhr = new XMLHttpRequest();
-            xhr.open('DELETE', '/favorite', true);
+            xhr.open('DELETE', `/delete_User/${bookId}`, true);
             xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 
             // Define a função de callback para lidar com a resposta do servidor
