@@ -64,11 +64,11 @@ const getindex = (req, res) => {
 }
 const getlogin = (req, res) => {
     console.log("GET /login");
-    res.render("paginas/login");
+    res.render("login");
 }
 const getregister = (req, res) => {
     console.log("GET /register");
-    res.render("paginas/register");
+    res.render("register");
 }
 const getperfil = (req, res) => {
     console.log("GET /perfil");
@@ -184,7 +184,7 @@ const getperfil = (req, res) => {
 
                     //console.log(perfil);
 
-                    res.render("paginas/perfil", { perfil: perfil });
+                    res.render("perfil", { perfil: perfil });
                 });
             });
         });
@@ -290,7 +290,7 @@ const getdashboard = (req, res) => {
                             generos: generos
                         };
 
-                        res.render("paginas/dashboard", { perfil: perfil });
+                        res.render("dashboard", { perfil: perfil });
                     });
                 });
             });
@@ -315,7 +315,7 @@ const getdashboard = (req, res) => {
                     generos: generos
                 };
 
-                res.render("paginas/dashboard", { perfil: perfil });
+                res.render("dashboard", { perfil: perfil });
             });
         });
     }
@@ -344,7 +344,7 @@ const getranking = (req, res) => {
                 return res.status(500).send('Erro ao buscar livros');
             }
 
-            res.render("paginas/ranking", { usuarios: userResults, livros: bookResults });
+            res.render("ranking", { usuarios: userResults, livros: bookResults });
         });
     });
 }
@@ -479,7 +479,7 @@ const getdetalhes_dados = (req, res) => {
                         }
 
                         // Renderiza a página de detalhes com todos os detalhes
-                        res.render('paginas/detalhes', { detalhes: detalhes });
+                        res.render('detalhes', { detalhes: detalhes });
                     });
                 });
             });
@@ -505,7 +505,7 @@ const geteditar = (req, res) => {
             const perfil = results[0];
             //console.log(perfil);
 
-            res.render("paginas/editar", { perfil: perfil });
+            res.render("editar", { perfil: perfil });
         });
 
     } else { 
@@ -708,7 +708,7 @@ const postsearch = (req, res) => {
                     });
 
                     // Renderiza a página de resultados de pesquisa com os livros encontrados
-                    res.render('paginas/search', { livros: livros, currentPage: page, totalPages: totalPages, query: query });
+                    res.render('search', { livros: livros, currentPage: page, totalPages: totalPages, query: query });
                 }
             );
         }

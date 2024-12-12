@@ -9,7 +9,7 @@ const app = express();
 
 // Middlewares
 app.set("view engine", "ejs");
-app.set("views", "www");
+app.set("views", "views");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

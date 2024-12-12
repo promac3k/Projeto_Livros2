@@ -8,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" media="screen" href="styles/search.css" />
     <script src="scripts/search.js"></script>
-    <%- include('../links_headers'); %>
+    <%- include('links_headers'); %>
 </head>
 
 <body>
-    <%- include('../header'); %>
+    <%- include('header'); %>
 
         <main>
             <section id="livro-detalhes">
@@ -27,7 +27,7 @@
                                         <%= livro.titulo %>
                                     </h2>
                                     <% if (livro.imagem) { %>
-                                        <img class="img-thumbnail row-image" src="../images/<%= livro.imagem %>" alt="Capa do livro">
+                                        <img class="img-thumbnail row-image" src="images/<%= livro.imagem %>" alt="Capa do livro">
                                       <% } else { %>
                                         <strong><p>Imagem não disponível</p></strong>
                                       <% } %>
