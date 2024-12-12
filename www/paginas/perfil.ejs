@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>biblioteca - Perfil</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles/perfil.css">
+    <script src="scripts/perfil.js" defer></script>
+    
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="menu">
+                <ul class="nav">
+                    <li><a id="menuInicial" href="/">Página Inicial</a></li>
+                    <li><a id="menuDashboard" href="/dashboard">Dashboard</a></li>
+                    <li><a id="menuRanking" href="/ranking">Ranking</a></li>
+                    <li>
+                        <form id="searchForm" action="/search" method="post">
+                            <input type="text" id="searchInput" name="query" placeholder="Pesquisar livros...">
+                            <button type="submit">Pesquisar</button>
+                        </form>
+                    </li>
+                    <li style="float:right;"><a id="logout" href="#">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+      </header>
+    <main>
+        <section class="profile-header">
+            <h1><%= perfil.name %></h1>
+            <p>Email: <%= perfil.email %></p>
+            <form id="formEditar" action="/editar" method="get">
+                <button type="submit">Editar Perfil</button>
+            </form>
+        </section>
+        <section class="profile-details">
+            <hr>
+            <h2>Informações Adicionais:</h2>
+            <p>Data de Nascimento: <%= new Date(perfil.birth_date).toLocaleDateString() %></p>
+            <p>País: <%= perfil.country %></p>
+            <p>Telefone: <%= perfil.telephone %></p>
+            <p>Ultimo Login: <%= new Date(perfil.timestamp_old).toLocaleString() %></p>
+            <p>Número de Acessos: <%= perfil.access_count %></p>
+        </section>
+        <section class="profile-favorite">
+            <hr>
+            <h2>Lista de Favoritos:</h2>
+            <div class="row px-4">
+                <div class="col-lg-12 border rounded shadow-sm">
+                    <table class="table table-hover table-responsive-lg">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Detalhes</th>
+                                <th scope="col">Imagem</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Preço</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Remover</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% perfil.favoritos.forEach(favorito => { %>
+                                <tr>
+                                    <th scope="row">
+                                        <a class="btn btn-outline-success" href="/detalhes/<%= favorito.id %>">
+                                            <i class="fas fa-file-alt"></i>
+                                        </a>
+                                    </th>
+                                    <td>
+                                        <img class="img-thumbnail row-image" src="../images/<%= favorito.imagem %>">
+                                    </td>
+                                    <td>
+                                        <small><%= favorito.title %></small>
+                                    </td>
+                                    <td>
+                                        <%= favorito.price %>€
+                                    </td>
+                                    <td>
+                                        <div class="rating">
+                                            <div class="stars">
+                                                <% for (let i = 1; i <= 5; i++) { %>
+                                                    <span class="star" data-value="<%= i %>">&#9733;</span>
+                                                <% } %>
+                                            </div>
+                                            <p class="user-rating" id="user-rating" data-user-rating="<%= favorito.rating %>"></p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button id="DeleteFav" title="Remover dos Favoritos" data-product="<%= favorito.id %>"
+                                            class="DeleteFav update-favs btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

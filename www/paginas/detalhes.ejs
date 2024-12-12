@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Biblioteca - detalhes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/detalhes.css" />
+    <script src="../scripts/detalhes.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/header.css" />
+    <script defer src="../scripts/header.js"></script>
+</head>
+<body>
+    
+    <%- include('../header'); %>
+
+  <main>
+    <section id="livro-detalhes">
+      <h1 id="titulo">Detalhes do Livro</h1>
+      <hr>
+      <div id="detalhes" class="detalhes">
+        <div class="imagem">
+          <% if (detalhes.imagem) { %>
+            <img src="../images/<%= detalhes.imagem %>" alt="Capa do livro">
+          <% } else { %>
+            <p>Imagem não disponível</p>
+          <% } %>
+          <div class="rating">
+            <h3>Classificação:</h3>
+            <div class="stars">
+                <% for (let i = 1; i <= 5; i++) { %>
+                    <span class="star" data-value="<%= i %>">&#9733;</span>
+                <% } %>
+            </div>
+            <p id="user-rating" data-user-rating="<%= detalhes.user_rating %>">Sua classificação: <%= detalhes.user_rating %> / 5</p>
+          </div>
+        </div>
+        <div class="informacoes">
+          <h2><%= detalhes.titulo %></h2>
+          <hr>
+          <p><strong>Autor:</strong> <%= detalhes.autor %></p>
+          <p><strong>Gênero:</strong> <%= detalhes.generos.join(', ') %></p>
+          <p><strong>Descrição:</strong> <%= detalhes.descriçao %></p>
+          <p><strong>Data de Publicação:</strong> <%= new Date(detalhes.data_publicação).toLocaleDateString() %></p>
+          <p><strong>Editora:</strong> <%= detalhes.editora %></p>
+          <p><strong>Sinopse:</strong> <%= detalhes.sinopse %></p>
+          <p><strong>Idioma:</strong> <%= detalhes.idioma %></p>
+          <p><strong>Páginas:</strong> <%= detalhes.páginas %></p>
+          <% if (detalhes.stock > 0) { %>
+            <p><strong>Stock:</strong> <%= detalhes.stock %></p>
+          <% } else { %>
+            <p><strong>Stock:</strong> Livro adicionado recentemente sem Stock</p>
+          <% } %>
+          <p><strong>Preço:</strong> <%= detalhes.preço %>€</p>
+          <div class="favorito">
+            <h3>Adicionar aos favoritos:</h3>
+            <span id="favorite-heart" class="<%= detalhes.is_favorite ? 'favorited' : '' %>">&#10084;</span>
+        </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

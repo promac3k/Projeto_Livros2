@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil - Biblioteca</title>
+    <link rel="stylesheet" href="/styles/editar.css">
+    <script src="/scripts/editar.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h3>Editar Perfil</h3>
+        <form id="formEditar" action="/editar" method="POST">
+            <label for="name">Nome de Utilizador:</label>
+            <input id="name" name="name" type="text" value="<%= perfil.username %>" placeholder="Introduza o nome" required>
+            
+            <label for="email">Email:</label>
+            <input id="email" name="email" type="email" value="<%= perfil.email %>" placeholder="Introduza o email" required readonly>
+
+            <label for="country">País:</label>
+            <select id="country" name="country" required>
+                <option value="">Selecione o país</option>
+                <option value="Portugal" data-code="+351" <%= perfil.country === 'Portugal' ? 'selected' : '' %>>Portugal</option>
+                <option value="Brasil" data-code="+55" <%= perfil.country === 'Brasil' ? 'selected' : '' %>>Brasil</option>
+                <option value="Estados Unidos" data-code="+1" <%= perfil.country === 'Estados Unidos' ? 'selected' : '' %>>Estados Unidos</option>
+                <option value="Espanha" data-code="+34" <%= perfil.country === 'Espanha' ? 'selected' : '' %>>Espanha</option>
+                <option value="França" data-code="+33" <%= perfil.country === 'França' ? 'selected' : '' %>>França</option>
+            </select>
+
+            <label for="phone">Telefone:</label>
+            <div style="display: flex;">
+                <input id="countryCode" name="countryCode" type="text" readonly style="width: 50px; margin-right: 5px;">
+                <input id="phone" name="phone" type="tel" value="<%= perfil.telephone.replace(/^\+\d+/, '').trim() %>" placeholder="Introduza o telefone" required maxlength="9" style="flex: 1;">
+            </div>
+
+            <label for="birthdate">Data de Nascimento:</label>
+            <input id="birthdate" name="birthdate" type="date" value="<%= perfil.birth_date.toISOString().split('T')[0] %>" required>
+
+            <label for="oldPassword">Senha Antiga:</label>
+            <input id="oldPassword" name="oldPassword" type="password" placeholder="Introduza a senha antiga">
+
+            <label for="newPassword">Nova Senha:</label>
+            <input id="newPassword" name="newPassword" type="password" placeholder="Introduza a nova senha">
+
+            <div class="buttons">
+                <button type="button" onclick="window.location.href='/perfil'">Manter Dados</button>
+                <button type="submit">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

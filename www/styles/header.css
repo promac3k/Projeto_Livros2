@@ -1,0 +1,56 @@
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+}
+
+header nav .menu {
+    text-align: center;
+}
+
+header nav .menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+header nav .menu ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav .menu ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+header nav .menu ul li a:hover {
+    background-color: #555;
+    border-radius: 4px;
+}
+
+
+header nav .menu ul li form {
+    display: inline-block;
+}
+
+header nav .menu ul li input[type="text"] {
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+}
+
+header nav .menu ul li button {
+    padding: 5px 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+header nav .menu ul li button:hover {
+    background-color: #777;
+}

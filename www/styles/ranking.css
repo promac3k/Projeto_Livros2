@@ -1,0 +1,69 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#ranking {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ranking-table {
+    width: 48%;
+}
+
+.ranking-table h2 {
+    text-align: center;
+}
+
+.ranking-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.ranking-table th, .ranking-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.ranking-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.ranking-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.ranking-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.ranking-table td.gold {
+    background-color: rgba(255, 215, 0, 0.6);
+}
+
+.ranking-table td.silver {
+    background-color: rgba(192, 192, 192, 0.6);
+}
+
+.ranking-table td.bronze {
+    background-color: rgba(205, 127, 50, 0.6);
+}
+
+.star {
+    color: #f39c12;
+    font-size: 17px;
+}

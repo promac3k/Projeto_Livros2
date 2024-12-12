@@ -1,0 +1,210 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+}
+
+header nav .menu {
+    text-align: center;
+}
+
+header nav .menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+header nav .menu ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav .menu ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+header nav .menu ul li a:hover {
+    background-color: #555;
+    border-radius: 4px;
+}
+
+
+header nav .menu ul li form {
+    display: inline-block;
+}
+
+header nav .menu ul li input[type="text"] {
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+}
+
+header nav .menu ul li button {
+    padding: 5px 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+header nav .menu ul li button:hover {
+    background-color: #777;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    text-align: center;
+}
+
+.profile-header h1 {
+    margin-top: 0;
+}
+
+.profile-details {
+    margin-top: 20px;
+}
+
+.profile-details h2 {
+    margin-top: 0;
+}
+
+.profile-details p {
+    margin: 5px 0;
+}
+
+button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.profile-favorite {
+    margin-top: 20px;
+}
+
+.table-responsive-lg {
+    overflow-x: auto;
+}
+
+.table {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+}
+
+.table th {
+    font-weight: bold;
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.row-image {
+    max-width: 70px;
+    height: auto;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.img-thumbnail {
+    max-width: 80px;
+    height: auto;
+}
+
+/* Estilo geral dos botões */
+.btn {
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px; /* Aumentei o tamanho para melhorar a visibilidade */
+    border-radius: 5px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Suaviza a transição no hover */
+}
+
+/* Estilo para o botão "Detalhes" */
+.btn-outline-success {
+    background-color: #fff;
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.4); /* Adiciona um efeito de sombra */
+}
+
+/* Estilo para o botão "Remover" */
+.btn-outline-secondary {
+    background-color: #fff;
+    border-color: #dc3545; /* Vermelho */
+    color: #dc3545; /* Vermelho */
+}
+
+.btn-outline-secondary:hover {
+    background-color: #dc3545; /* Vermelho */
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4); /* Adiciona um efeito de sombra */
+}
+
+/* Estilo para ícones nos botões */
+.btn ion-icon,
+.btn i {
+    font-size: 18px; /* Ajusta o tamanho do ícone */
+    vertical-align: middle; /* Alinha com o texto */
+}
+
+.rating {
+    text-align: center;
+}
+
+.stars {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.star {
+    font-size: 24px;
+    color: #ccc;
+}
+
+.star.selected {
+    color: #f39c12;
+}

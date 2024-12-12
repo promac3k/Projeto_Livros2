@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Biblioteca - Ranking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles/ranking.css" />
+    <script src="scripts/ranking.js"></script>
+    <%- include('../links_headers'); %>
+</head>
+<body>
+
+  <%- include('../header'); %>
+
+  <main>
+    <section id="ranking">
+      <div class="ranking-table">
+        <h2>Usuários com Mais Acessos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Posição</th>
+              <th>Usuário</th>
+              <th>Acessos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% usuarios.forEach((usuario, index) => { %>
+              <tr>
+                <td class="<%= index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '' %>"><%= index + 1 %></td>
+                <td><%= usuario.username %></td>
+                <td><%= usuario.access_count %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <div class="ranking-table">
+        <h2>Livros com Melhores Classificações</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Posição</th>
+              <th>Livro</th>
+              <th>Total de Estrelas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% livros.forEach((livro, index) => { %>
+              <tr>
+                <td class="<%= index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '' %>"><%= index + 1 %></td>
+                <td><%= livro.title %></td>
+                <td><span class="star">&#9733;</span> <%= livro.total_rating %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

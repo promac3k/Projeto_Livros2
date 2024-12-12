@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Biblioteca</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="/styles/dashboard.css" />
+    <script src="/scripts/dashboard.js" defer></script>
+    <%- include('../links_headers'); %>
+</head>
+<body>
+    <%- include('../header'); %>
+
+    <main>
+        <section id="user-data">
+            <h2>Bem-vindo, <%= perfil.name ? perfil.name : 'Visitante' %></h2>
+            <hr>
+            <p>Estatísticas pessoais:</p>
+            <ul>
+                <li>Livros favoritos: <span id="books-fav"><%= perfil.books_fav !== null ? perfil.books_fav : 0 %></span></li>
+                <li>Rantings feitos: <span id="reviews-count"><%= perfil.reviews_count !== null ? perfil.reviews_count : 0 %></span></li>
+            </ul>
+        </section>
+        <section id="add-book">
+            <h2>Adicionar Livro</h2>
+            <form id="add-book-form">
+                <input type="text" id="book-title" name="title" placeholder="Título do Livro" required>
+                <textarea id="book-description" name="description" placeholder="Descrição" required></textarea>
+                <input type="date" id="book-publication" name="publication" placeholder="Data de Publicação" required>
+                <select id="book-author" name="author" required>
+                    <option value="">Selecione o Autor</option>
+                    <% perfil.autores.forEach(autor => { %>
+                        <option value="<%= autor.id %>"><%= autor.name %></option>
+                    <% }) %>
+                </select>
+                <select id="book-genres" name="genres" multiple required>
+                    <option value="">Selecione os Gêneros</option>
+                    <% perfil.generos.forEach(genero => { %>
+                        <option value="<%= genero.id %>"><%= genero.name %></option>
+                    <% }) %>
+                </select>
+                <input type="text" id="book-publisher" name="publisher" placeholder="Editora" required>
+                <textarea id="book-synopsis" name="synopsis" placeholder="Sinopse" required></textarea>
+                <input type="text" id="book-language" name="language" placeholder="Idioma" required>
+                <input type="number" id="book-pages" name="pages" placeholder="Número de Páginas" required>
+                <input type="number" step="0.01" id="book-price" name="price" placeholder="Preço" required>
+                <input type="text" id="book-cover-image" name="cover_image" placeholder="URL da Imagem de Capa (.jpg)" required>
+                <button type="submit">Adicionar</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

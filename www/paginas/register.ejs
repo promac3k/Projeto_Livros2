@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Biblioteca</title>
+    <link rel="stylesheet" href="styles/register.css">
+    <script src="scripts/register.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h3>Registro</h3>
+        <form id="formRegistro">
+            <label for="name">Nome de Utilizador:</label>
+            <input id="name" type="text" placeholder="Introduza o nome" required>
+            
+            <label for="email">Email:</label>
+            <input id="email" type="email" placeholder="Introduza o email" required>
+
+            <label for="country">País:</label>
+            <select id="country" name="country" required>
+                <option value="">Selecione o país</option>
+                <option value="Portugal" data-code="+351">Portugal</option>
+                <option value="Brasil" data-code="+55">Brasil</option>
+                <option value="Estados Unidos" data-code="+1">Estados Unidos</option>
+                <option value="Espanha" data-code="+34">Espanha</option>
+                <option value="França" data-code="+33">França</option>
+            </select>
+
+            <label for="phone">Telefone:</label>
+            <div style="display: flex;">
+                <input id="countryCode" type="text" readonly style="width: 50px; margin-right: 5px;">
+                <input id="phone" type="tel" placeholder="Introduza o telefone" required style="flex: 1;">
+            </div>
+
+            <label for="birthdate">Data de Nascimento:</label>
+            <input id="birthdate" type="date" required>
+            
+            <label for="password">Palavra-Passe:</label>
+            <input id="password" type="password" placeholder="Introduza a Palavra-Passe" required>
+            
+            <input type="submit" value="Criar conta">
+        </form>
+        <p>Se já tem conta, <a href="/login">clique aqui</a> para fazer login.</p>
+    </div>
+</body>
+</html>

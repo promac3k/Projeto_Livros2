@@ -1,0 +1,6 @@
+{
+    "host": "localhost",
+    "user": "root",
+    "database": "biblioteca",
+    "password": "12345"
+}

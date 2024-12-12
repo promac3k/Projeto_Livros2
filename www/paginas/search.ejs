@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Biblioteca - Busca</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="styles/search.css" />
+    <script src="scripts/search.js"></script>
+    <%- include('../links_headers'); %>
+</head>
+
+<body>
+    <%- include('../header'); %>
+
+        <main>
+            <section id="livro-detalhes">
+                <h1 id="titulo">Resultados da Busca - <%= query %>
+                </h1>
+                <div id="resultados" class="resultados">
+                    <% if (livros.length> 0) { %>
+                        <div class="grid-container">
+                            <% livros.forEach(livro=> { %>
+                                <div class="livro">
+                                    <h2>
+                                        <%= livro.titulo %>
+                                    </h2>
+                                    <% if (livro.imagem) { %>
+                                        <img class="img-thumbnail row-image" src="../images/<%= livro.imagem %>" alt="Capa do livro">
+                                      <% } else { %>
+                                        <strong><p>Imagem não disponível</p></strong>
+                                      <% } %>
+                                      <% if (livro.stock > 0) { %>
+                                        <p><strong>Stock:</strong> <%= livro.stock %></p>
+                                      <% } else { %>
+                                        <p><strong>Stock:</strong> Livro adicionado recentemente sem Stock</p>
+                                      <% } %>
+                                    <p><strong>Preço:</strong>
+                                        <%= livro.preço %>€
+                                    </p>
+                                    <button onclick="window.location.href='/detalhes/<%= livro.id %>'">
+                                        Detalhes
+                                    </button>
+                                </div>
+                            <% }) %>
+                        </div>
+                        <% } else { %>
+                            <p>Nenhum livro encontrado.</p>
+                        <% } %>
+                </div>
+                <div class="pagination">
+                    <% if (currentPage> 1) { %>
+                        <a href="/?page=<%= currentPage - 1 %>">&laquo; Anterior</a>
+                    <% } %>
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                        <a href="/?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>">
+                            <%= i %>
+                        </a>
+                    <% } %>
+                    <% if (currentPage < totalPages) { %>
+                        <a href="/?page=<%= currentPage + 1 %>">Próxima &raquo;</a>
+                    <% } %>
+                </div>
+            </section>
+        </main>
+</body>
+
+</html>
