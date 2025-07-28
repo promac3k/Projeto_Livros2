@@ -1,0 +1,6 @@
+{
+    "host": "localhost",
+    "user": "your_username",
+    "database": "biblioteca",
+    "password": "your_password"
+}
